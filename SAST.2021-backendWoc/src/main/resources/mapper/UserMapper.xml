@@ -9,7 +9,7 @@
 
 
     <insert id="add" parameterType="com.example.woc.entity.Account">
-        insert into woc.account(id,username,password,email) values (#{id},#{username},#{password},#{email})
+        insert into woc.account(id,username,password,email,role) values (#{id},#{username},#{password},#{email},0)
     </insert>
 
     <select id="queryByName" resultType="com.example.woc.entity.Account">

@@ -1,10 +1,16 @@
 package com.example.woc.controller;
 
 import com.example.woc.entity.Account;
+import com.example.woc.entity.UserLoginInfo;
 import com.example.woc.service.UserService;
 import com.example.woc.util.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author: 風楪fy
@@ -38,19 +44,30 @@ public class UserController {
 
     /**
      * 完成登录功能
-     * @param account
+     * @param account（用户名 密码 职位）
      * @return 是否登录成功
      */
     @PostMapping("/login")
-    public Boolean login(Account account) {
+    public Boolean login(Account account, HttpServletRequest request, HttpServletResponse response) {
         //todo
         MD5Utils md5Utils = new MD5Utils();
         try {
+            //用户名
             String username = account.getUsername();
+            //职位
+            String id = account.getRole().toString();
             Account accountSelect = userService.queryByName(username);
             String pwd = accountSelect.getPassword();
             String pwdInput = md5Utils.md5(account.getPassword());
+            //密码匹配
             if (pwd.equals(pwdInput)) {
+                UserLoginInfo userLoginInfo = new UserLoginInfo();
+                userLoginInfo.setUserId(id);
+                userLoginInfo.setUserName(username);
+                // 取得 HttpSession 对象
+                HttpSession session = request.getSession();
+                // 写入登录信息
+                session.setAttribute("userLoginInfo", userLoginInfo);
                 return true;
             }
         } catch (Exception e) {

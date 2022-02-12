@@ -33,6 +33,7 @@ public class UserService {
         String nPwd = md5Utils.md5(password);
 
         String email = account.getEmail();
+
         return userMapper.add(id,username,nPwd,email);
     }
 

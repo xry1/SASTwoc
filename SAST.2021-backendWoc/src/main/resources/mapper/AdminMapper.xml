@@ -11,5 +11,14 @@
         delete  from woc.account where username = #{username}
     </delete>
 
+    <update id="userAuthorization" parameterType="com.example.woc.entity.Account">
+        update woc.account
+        <set>
+            <if test="role != null">role=#{role},</if>
+        </set>
+        where username=#{username}
+    </update>
+
+
 
 </mapper>

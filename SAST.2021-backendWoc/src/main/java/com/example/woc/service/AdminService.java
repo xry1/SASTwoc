@@ -24,4 +24,8 @@ public class AdminService {
          adminMapper.deleteByName(username);
     }
 
+    //根据用户名授予权限
+    public void userAuthorization(String username,Integer role){
+        adminMapper.userAuthorization(username,role);
+    }
 }
